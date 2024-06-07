@@ -1,5 +1,5 @@
 <?php
 
-$conn = mysqli_connect("localhost","root","","kitsakit");
+$conn = mysqli_connect("localhost","root","","gor_karisma_3");
 
 ?>
