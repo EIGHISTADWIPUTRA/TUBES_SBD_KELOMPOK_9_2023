@@ -320,15 +320,25 @@ button {
 /** banner section **/
 
 .banner_main {
-     background: url(../images/banner.jpg);
-     background-repeat: no-repeat;
+     position: relative;
      min-height: 800px;
      display: flex;
      justify-content: center;
-     align-content: center;
      align-items: center;
+     background: url(../images/banner.jpg) no-repeat;
      background-size: 100% 100%;
 }
+
+.banner_main::before {
+     content: "";
+     position: absolute;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 100%;
+     background-color: rgba(0, 0, 0, 0.5); /* Ubah opasitas (nilai terakhir) sesuai kebutuhan Anda */
+}
+
 
 .text-bg {
      text-align: left;
