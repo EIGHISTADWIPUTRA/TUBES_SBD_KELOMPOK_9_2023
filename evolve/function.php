@@ -235,4 +235,24 @@ function updateExtraFasilitas($conn, $id_fasilitas, $nama_fasilitas, $deskripsi_
               WHERE id_fasilitas = $id_fasilitas";
     return mysqli_query($conn, $query);
 }
+
+//fungsi untuk mengecek nomor telfon
+function checkPhoneNumber($conn, $no_telepon) {
+    $query = "SELECT id_penyewa FROM penyewa WHERE no_telepon_penyewa = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("s", $no_telepon);
+    $stmt->execute();
+    $stmt->store_result();
+
+    if ($stmt->num_rows > 0) {
+        $stmt->bind_result($id_penyewa);
+        $stmt->fetch();
+        return $id_penyewa; // Mengembalikan id_penyewa jika ditemukan
+    } else {
+        return false; // Mengembalikan false jika tidak ditemukan
+    }
+
+    $stmt->close();
+}
+
 ?>
