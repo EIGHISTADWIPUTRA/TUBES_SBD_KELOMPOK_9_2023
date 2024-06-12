@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 12, 2024 at 11:56 AM
+-- Generation Time: Jun 12, 2024 at 12:39 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -167,16 +167,16 @@ INSERT INTO `lapangan` (`id_lapangan`, `nama_lapangan`, `harga_lapangan`, `deskr
 CREATE TABLE `penyewa` (
   `id_penyewa` int(10) NOT NULL,
   `nama_penyewa` varchar(255) NOT NULL,
-  `no_telepon_penyewa` varchar(255) NOT NULL,
-  `status_member` enum('Member','Non Member') NOT NULL
+  `no_telepon_penyewa` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `penyewa`
 --
 
-INSERT INTO `penyewa` (`id_penyewa`, `nama_penyewa`, `no_telepon_penyewa`, `status_member`) VALUES
-(1, 'EGIS', '085163698805', 'Non Member');
+INSERT INTO `penyewa` (`id_penyewa`, `nama_penyewa`, `no_telepon_penyewa`) VALUES
+(1, 'EGIS', '085163698805'),
+(2, 'alipa', '085163698805');
 
 -- --------------------------------------------------------
 
@@ -261,7 +261,7 @@ ALTER TABLE `lapangan`
 -- AUTO_INCREMENT for table `penyewa`
 --
 ALTER TABLE `penyewa`
-  MODIFY `id_penyewa` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_penyewa` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
