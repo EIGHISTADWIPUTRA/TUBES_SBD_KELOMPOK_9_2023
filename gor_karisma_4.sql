@@ -190,7 +190,6 @@ CREATE TABLE `voucher` (
   `deskripsi_voucher` varchar(255) NOT NULL,
   `tanggal_berlaku` date NOT NULL,
   `besar_diskon` decimal(10,2) NOT NULL,
-  `stok` int(11) NOT NULL,
   `code_voucher` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
