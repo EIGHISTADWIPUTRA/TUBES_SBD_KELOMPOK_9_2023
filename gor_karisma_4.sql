@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 11, 2024 at 11:49 AM
+-- Generation Time: Jun 12, 2024 at 11:56 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `gor_karisma_2`
+-- Database: `gor_karisma_1`
 --
 
 DELIMITER $$
@@ -110,7 +110,8 @@ INSERT INTO `konfirmasi_bayar` (`id_konfirmasi`, `id_booking`, `atas_nama`, `buk
 --
 DELIMITER $$
 CREATE TRIGGER `GunakanVoucher` AFTER INSERT ON `konfirmasi_bayar` FOR EACH ROW BEGIN
-    DECLARE stok INT;
+    DECLARE diskon DECIMAL(10,2);
+    DECLARE total_pembayaran DECIMAL(10,2);
     DECLARE id_voucher INT;
     DECLARE tanggal_main DATE;
 
@@ -118,31 +119,21 @@ CREATE TRIGGER `GunakanVoucher` AFTER INSERT ON `konfirmasi_bayar` FOR EACH ROW 
     SELECT id_voucher, tanggal_main INTO id_voucher, tanggal_main
     FROM booking WHERE id_booking = NEW.id_booking;
 
-    -- Check if the booking uses a voucher
-    IF id_voucher IS NOT NULL THEN
-        
-        -- Check if the voucher exists and has stock
-        SELECT stok INTO stok 
-        FROM voucher 
-        WHERE id_voucher = id_voucher 
-        AND tanggal_berlaku = tanggal_main;
-        
-        -- Reduce stock if stock is available
-        IF stok IS NOT NULL AND stok > 0 THEN
-            UPDATE voucher 
-            SET stok = stok - 1 
-            WHERE id_voucher = id_voucher 
-            AND tanggal_berlaku = tanggal_main;
-        END IF;
-    END IF;
-END
-$$
-DELIMITER ;
-DELIMITER $$
-CREATE TRIGGER `UpdatePaymentStatus` AFTER INSERT ON `konfirmasi_bayar` FOR EACH ROW BEGIN
-    UPDATE booking
-    SET status_pembayaran = 'Sudah'
-    WHERE id_booking = NEW.id_booking;
+    -- Get the discount amount from the voucher
+    SELECT besar_diskon INTO diskon
+    FROM voucher WHERE id_voucher = id_voucher;
+
+    -- Get the total payment from the confirmation
+    SELECT total INTO total_pembayaran
+    FROM konfirmasi_bayar WHERE id_konfirmasi = NEW.id_konfirmasi;
+
+    -- Calculate the new total payment after applying the voucher discount
+    SET total_pembayaran = total_pembayaran - diskon;
+
+    -- Update the total payment in the confirmation
+    UPDATE konfirmasi_bayar
+    SET total = total_pembayaran
+    WHERE id_konfirmasi = NEW.id_konfirmasi;
 END
 $$
 DELIMITER ;
@@ -199,15 +190,9 @@ CREATE TABLE `voucher` (
   `deskripsi_voucher` varchar(255) NOT NULL,
   `tanggal_berlaku` date NOT NULL,
   `besar_diskon` decimal(10,2) NOT NULL,
-  `stok` int(11) NOT NULL
+  `stok` int(11) NOT NULL,
+  `code_voucher` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `voucher`
---
-
-INSERT INTO `voucher` (`id_voucher`, `nama_voucher`, `deskripsi_voucher`, `tanggal_berlaku`, `besar_diskon`, `stok`) VALUES
-(1, 'Ramadhan', 'Tersedia saat bulan ramadhan saja', '2024-06-07', 20000.00, 5);
 
 --
 -- Indexes for dumped tables
@@ -277,12 +262,6 @@ ALTER TABLE `lapangan`
 --
 ALTER TABLE `penyewa`
   MODIFY `id_penyewa` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `voucher`
---
-ALTER TABLE `voucher`
-  MODIFY `id_voucher` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables
