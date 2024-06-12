@@ -141,22 +141,35 @@ function updateKonfirmasi($conn, $id_konfirmasi, $id_booking, $atas_nama, $bukti
 }
 // Fungsi untuk membaca data dari tabel booking
 function readBooking($conn) {
-    $query = "SELECT * FROM booking";
+    // Query untuk mengambil data booking dengan informasi tambahan
+    $query = "SELECT booking.*, 
+              voucher.nama_voucher AS nama_voucher,
+              lapangan.nama_lapangan AS nama_lapangan,
+              extra_fasilitas.nama_fasilitas AS nama_fasilitas,
+              penyewa.nama_penyewa AS nama_pemesan
+              FROM booking
+              LEFT JOIN voucher ON booking.id_voucher = voucher.id_voucher
+              LEFT JOIN lapangan ON booking.id_lapangan = lapangan.id_lapangan
+              LEFT JOIN extra_fasilitas ON booking.id_fasilitas = extra_fasilitas.id_fasilitas
+              LEFT JOIN penyewa ON booking.id_penyewa = penyewa.id_penyewa";
+              
+    // Eksekusi query
     $result = mysqli_query($conn, $query);
-    $booking = [];
+    $booking = []; // Inisialisasi array untuk menyimpan data booking
 
+    // Cek apakah query berhasil dieksekusi
     if ($result) {
+        // Loop melalui hasil query dan tambahkan ke dalam array booking
         while ($row = mysqli_fetch_assoc($result)) {
             $booking[] = $row;
         }
     }
     return array_reverse($booking); // Membalikkan urutan data
 }
-
 // Fungsi untuk menambah data ke tabel booking
-function addBooking($conn, $tanggal_booking, $jam_booking, $id_penyewa, $id_lapangan, $id_voucher, $tanggal_main, $jam_mulai, $lama, $status_pembayaran) {
-    $query = "INSERT INTO booking (tanggal_booking, jam_booking, id_penyewa, id_lapangan, id_voucher, tanggal_main, jam_mulai, lama, status_pembayaran) 
-              VALUES ('$tanggal_booking', '$jam_booking', '$id_penyewa', '$id_lapangan', '$id_voucher', '$tanggal_main', '$jam_mulai', '$lama', '$status_pembayaran')";
+function addBooking($conn, $tanggal_booking, $jam_booking, $id_penyewa, $id_lapangan, $id_voucher, $tanggal_main, $jam_mulai, $lama, $status_pembayaran, $id_fasilitas) {
+    $query = "INSERT INTO booking (tanggal_booking, jam_booking, id_penyewa, id_lapangan, id_voucher, tanggal_main, jam_mulai, lama, status_pembayaran, id_fasilitas) 
+              VALUES ('$tanggal_booking', '$jam_booking', '$id_penyewa', '$id_lapangan', '$id_voucher', '$tanggal_main', '$jam_mulai', '$lama', '$status_pembayaran', '$id_fasilitas')";
     return mysqli_query($conn, $query);
 }
 
@@ -166,12 +179,60 @@ function deleteBooking($conn, $id_booking) {
     return mysqli_query($conn, $query);
 }
 
+// Fungsi untuk menghapus entri konfirmasi berdasarkan id_booking
+function deleteKonfirmasiByBookingId($conn, $id_booking) {
+    // Query untuk mengupdate id_booking menjadi 0 pada tabel konfirmasi_bayar
+    $query = "UPDATE konfirmasi_bayar SET id_booking = 0 WHERE id_booking = $id_booking";
+
+    // Eksekusi query
+    if (mysqli_query($conn, $query)) {
+        // Jika berhasil, kembalikan true
+        return true;
+    } else {
+        // Jika gagal, kembalikan false
+        return false;
+    }
+}
 // Fungsi untuk mengupdate data di tabel booking
-function updateBooking($conn, $id_booking, $tanggal_booking, $jam_booking, $id_penyewa, $id_lapangan, $id_voucher, $tanggal_main, $jam_mulai, $lama, $status_pembayaran) {
+function updateBooking($conn, $id_booking, $id_penyewa, $id_lapangan,$id_fasilitas,$id_voucher, $tanggal_main, $jam_mulai, $lama, $status_pembayaran) {
     $query = "UPDATE booking 
-              SET tanggal_booking = '$tanggal_booking', jam_booking = '$jam_booking', id_penyewa = '$id_penyewa', id_lapangan = '$id_lapangan', id_voucher = '$id_voucher', tanggal_main = '$tanggal_main', jam_mulai = '$jam_mulai', lama = '$lama', status_pembayaran = '$status_pembayaran' 
+              SET tanggal_main = '$tanggal_main', id_penyewa = '$id_penyewa', id_lapangan = '$id_lapangan', id_voucher = '$id_voucher', tanggal_main = '$tanggal_main', jam_mulai = '$jam_mulai', lama = '$lama', status_pembayaran = '$status_pembayaran', id_fasilitas = '$id_fasilitas'
               WHERE id_booking = $id_booking";
     return mysqli_query($conn, $query);
 }
 
+// Fungsi untuk membaca data dari tabel extra_fasilitas
+function readExtraFasilitas($conn) {
+    $query = "SELECT * FROM extra_fasilitas";
+    $result = mysqli_query($conn, $query);
+    $extra_fasilitas = [];
+
+    if ($result) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $extra_fasilitas[] = $row;
+        }
+    }
+    return $extra_fasilitas;
+}
+
+// Fungsi untuk menambah data ke tabel extra_fasilitas
+function addExtraFasilitas($conn, $nama_fasilitas, $deskripsi_fasilitas, $harga_per_jam) {
+    $query = "INSERT INTO extra_fasilitas (nama_fasilitas, deskripsi_fasilitas, harga_per_jam) 
+              VALUES ('$nama_fasilitas', '$deskripsi_fasilitas', $harga_per_jam)";
+    return mysqli_query($conn, $query);
+}
+
+// Fungsi untuk menghapus data dari tabel extra_fasilitas berdasarkan id_fasilitas
+function deleteExtraFasilitas($conn, $id_fasilitas) {
+    $query = "DELETE FROM extra_fasilitas WHERE id_fasilitas = $id_fasilitas";
+    return mysqli_query($conn, $query);
+}
+
+// Fungsi untuk mengupdate data di tabel extra_fasilitas berdasarkan id_fasilitas
+function updateExtraFasilitas($conn, $id_fasilitas, $nama_fasilitas, $deskripsi_fasilitas, $harga_per_jam) {
+    $query = "UPDATE extra_fasilitas 
+              SET nama_fasilitas = '$nama_fasilitas', deskripsi_fasilitas = '$deskripsi_fasilitas', harga_per_jam = $harga_per_jam 
+              WHERE id_fasilitas = $id_fasilitas";
+    return mysqli_query($conn, $query);
+}
 ?>
