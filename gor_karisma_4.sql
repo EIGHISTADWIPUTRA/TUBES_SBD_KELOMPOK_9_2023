@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 12, 2024 at 03:23 PM
+-- Generation Time: Jun 12, 2024 at 04:03 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -192,6 +192,13 @@ CREATE TABLE `voucher` (
   `besar_diskon` decimal(10,2) NOT NULL,
   `code_voucher` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `voucher`
+--
+
+INSERT INTO `voucher` (`id_voucher`, `nama_voucher`, `deskripsi_voucher`, `tanggal_berlaku`, `besar_diskon`, `code_voucher`) VALUES
+(0, 'ramadhan', 'Ramadhan telat tiba. Dapatkan voucher sebesar 25%', '2024-06-14', 0.25, 'HARIRAYA2024');
 
 --
 -- Indexes for dumped tables
