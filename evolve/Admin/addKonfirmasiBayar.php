@@ -1,7 +1,6 @@
 <?php
 include('../function.php');
 
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id_booking = $_POST['id_booking'];
     $atas_nama = $_POST['atas_nama'];
@@ -22,7 +21,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </script>";
     }
 }
+
+// Fetch options for select input using existing read function
+$bookingOptions = readBooking($conn);
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,7 +41,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <form action="addKonfirmasiBayar.php" method="post">
             <div class="form-group">
                 <label for="id_booking">ID Booking</label>
-                <input type="number" class="form-control" id="id_booking" name="id_booking" required>
+                <select class="form-control" id="id_booking" name="id_booking" required>
+                    <option value="">Select Booking</option>
+                    <?php foreach ($bookingOptions as $option) { ?>
+                        <option value="<?= $option['id_booking'] ?>"><?= $option['id_booking'] ?> - <?= $option['nama_pemesan'] ?></option>
+                    <?php } ?>
+                </select>
             </div>
             <div class="form-group">
                 <label for="atas_nama">Atas Nama</label>
