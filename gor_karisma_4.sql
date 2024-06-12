@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 12, 2024 at 12:39 PM
+-- Generation Time: Jun 12, 2024 at 03:23 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `gor_karisma_1`
+-- Database: `db_kharisma`
 --
 
 DELIMITER $$
@@ -156,7 +156,8 @@ CREATE TABLE `lapangan` (
 --
 
 INSERT INTO `lapangan` (`id_lapangan`, `nama_lapangan`, `harga_lapangan`, `deskripsi_lapangan`) VALUES
-(1, 'Lapangan A', 50000, 'Dekat Pintu Masuk');
+(1, 'Lapangan A', 50000, 'Dekat Pintu Masuk'),
+(2, 'Lapangan B', 50000, 'deket pintu belakang');
 
 -- --------------------------------------------------------
 
@@ -175,8 +176,7 @@ CREATE TABLE `penyewa` (
 --
 
 INSERT INTO `penyewa` (`id_penyewa`, `nama_penyewa`, `no_telepon_penyewa`) VALUES
-(1, 'EGIS', '085163698805'),
-(2, 'alipa', '085163698805');
+(1, 'EGIS', '085163698805');
 
 -- --------------------------------------------------------
 
@@ -254,7 +254,7 @@ ALTER TABLE `konfirmasi_bayar`
 -- AUTO_INCREMENT for table `lapangan`
 --
 ALTER TABLE `lapangan`
-  MODIFY `id_lapangan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_lapangan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `penyewa`
