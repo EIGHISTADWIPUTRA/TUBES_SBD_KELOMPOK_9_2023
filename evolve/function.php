@@ -17,9 +17,9 @@ function readVouchers($conn) {
 }
 
 // Fungsi untuk menambah data ke tabel voucher
-function addVoucher($conn, $nama_voucher, $deskripsi_voucher, $tanggal_berlaku, $besar_diskon, $stok) {
-    $query = "INSERT INTO voucher (nama_voucher, deskripsi_voucher, tanggal_berlaku, besar_diskon, stok) 
-              VALUES ('$nama_voucher', '$deskripsi_voucher', '$tanggal_berlaku', '$besar_diskon', $stok)";
+function addVoucher($conn, $nama_voucher, $deskripsi_voucher, $tanggal_berlaku, $besar_diskon) {
+    $query = "INSERT INTO voucher (nama_voucher, deskripsi_voucher, tanggal_berlaku, besar_diskon) 
+              VALUES ('$nama_voucher', '$deskripsi_voucher', '$tanggal_berlaku', '$besar_diskon')";
     return mysqli_query($conn, $query);
 }
 
@@ -33,7 +33,7 @@ function deleteVoucher($conn, $id_voucher) {
 function updateVoucher($conn, $id_voucher, $nama_voucher, $deskripsi_voucher, $tanggal_berlaku, $besar_diskon, $stok) {
     $query = "UPDATE voucher 
               SET nama_voucher = '$nama_voucher', deskripsi_voucher = '$deskripsi_voucher', tanggal_berlaku = '$tanggal_berlaku', 
-                  besar_diskon = '$besar_diskon', stok = $stok 
+                  besar_diskon = '$besar_diskon' 
               WHERE id_voucher = $id_voucher";
     return mysqli_query($conn, $query);
 }
