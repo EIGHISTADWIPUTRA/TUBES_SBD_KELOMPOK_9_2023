@@ -37,6 +37,19 @@ function updateVoucher($conn, $id_voucher, $nama_voucher, $deskripsi_voucher, $t
               WHERE id_voucher = $id_voucher";
     return mysqli_query($conn, $query);
 }
+
+//fungsi untuk cek apakah data penyewa duplicate
+function checkDuplicatePenyewa($conn, $nama_penyewa, $no_telepon_penyewa) {
+    $nama_penyewa = mysqli_real_escape_string($conn, $nama_penyewa);
+    $no_telepon_penyewa = mysqli_real_escape_string($conn, $no_telepon_penyewa);
+
+    $query = "SELECT * FROM penyewa WHERE nama_penyewa = '$nama_penyewa' AND no_telepon_penyewa = '$no_telepon_penyewa'";
+    $result = mysqli_query($conn, $query);
+
+    return mysqli_num_rows($result) > 0;
+}
+
+
 // Fungsi untuk membaca data dari tabel penyewa
 function readPenyewa($conn) {
     $query = "SELECT * FROM penyewa";
@@ -51,9 +64,9 @@ function readPenyewa($conn) {
     return $penyewa;
 }
 // Fungsi untuk menambah data ke tabel penyewa
-function addPenyewa($conn, $nama_penyewa, $no_telepon_penyewa, $status_member) {
-    $query = "INSERT INTO penyewa (nama_penyewa, no_telepon_penyewa, status_member) 
-              VALUES ('$nama_penyewa', '$no_telepon_penyewa', '$status_member')";
+function addPenyewa($conn, $nama_penyewa, $no_telepon_penyewa) {
+    $query = "INSERT INTO penyewa (nama_penyewa, no_telepon_penyewa) 
+              VALUES ('$nama_penyewa', '$no_telepon_penyewa')";
     return mysqli_query($conn, $query);
 }
 
@@ -236,23 +249,5 @@ function updateExtraFasilitas($conn, $id_fasilitas, $nama_fasilitas, $deskripsi_
     return mysqli_query($conn, $query);
 }
 
-//fungsi untuk mengecek nomor telfon
-function checkPhoneNumber($conn, $no_telepon) {
-    $query = "SELECT id_penyewa FROM penyewa WHERE no_telepon_penyewa = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("s", $no_telepon);
-    $stmt->execute();
-    $stmt->store_result();
-
-    if ($stmt->num_rows > 0) {
-        $stmt->bind_result($id_penyewa);
-        $stmt->fetch();
-        return $id_penyewa; // Mengembalikan id_penyewa jika ditemukan
-    } else {
-        return false; // Mengembalikan false jika tidak ditemukan
-    }
-
-    $stmt->close();
-}
 
 ?>

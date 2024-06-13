@@ -50,9 +50,6 @@
                   <a class="nav-link active" aria-current="page" href="#banner">Home</a>
                </li>
                <li class="nav-item">
-                  <a class="nav-link" href="input_nomor.php">booking</a>
-               </li>
-               <li class="nav-item">
                   <a class="nav-link" href="#about">About us</a>
                </li>
                <li class="nav-item">
@@ -77,6 +74,8 @@
                         <span>HALAMAN ARAHAN 2024</span>
                         <p>"Rasakan pengalaman bermain bulutangkis yang tak terlupakan dengan fasilitas premium kami. Halaman web kami yang responsif dan serbaguna memberikan kemudahan bagi Anda untuk memesan lapangan dengan cepat dan efisien. Nikmati kenyamanan lapangan bulutangkis terbaik kami dan jadikan waktu luang Anda lebih bermanfaat.
                             Dapatkan diskon 25% untuk setiap pemesanan selama musim panas ini!"</p>
+                        <a href="ActionUser/registPenyewa.php" class="btn btn-primary">Registrasi</a>
+                        <button type="button" class="btn btn-primary">Booking</button>
                      </div>
                   </div>
                </div>
@@ -110,7 +109,7 @@
                </div>
                <div class="col-md-4">
                   <div class="Our_box">
-                     <i><img src="images/voucher.jpg.jpg" alt="#"/></i>
+                     <i><img src="images/voucher.jpg" alt="#"/></i>
                      <h4>VOUCHER <br>LAPANGAN</h4>
                   </div>
                </div>
